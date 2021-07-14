@@ -10,6 +10,8 @@ const colors = {
   },
 };
 
+// Default button styles
+// Dark/Light styles matching current Color Scheme
 function buttonDefault(props: Dict) {
   const isDarkMode = Appearance.getColorScheme() === 'dark';
   let bg = isDarkMode ? 'dark.900' : 'dark.50';
@@ -29,6 +31,7 @@ function buttonDefault(props: Dict) {
   };
 }
 
+// Brand button styles
 function buttonBrand(props: Dict) {
   const isDarkMode = Appearance.getColorScheme() === 'dark';
   let bg = 'brand.primary';
