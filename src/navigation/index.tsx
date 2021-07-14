@@ -1,14 +1,22 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from '@react-navigation/native';
 
+import { useThemeSettings } from '../hooks/useThemeSettings';
 import BottomTabNavigator from './BottomTabNavigator';
 
 const Stack = createStackNavigator();
 
 const Navigation: React.FC = () => {
+  const themeSettings = useThemeSettings();
+
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      theme={themeSettings.isDarkMode ? DarkTheme : DefaultTheme}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Root" component={BottomTabNavigator} />
       </Stack.Navigator>
