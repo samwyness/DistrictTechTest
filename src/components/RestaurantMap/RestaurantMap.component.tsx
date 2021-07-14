@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Center, View } from 'native-base';
-import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View } from 'native-base';
+import MapView, { PROVIDER_GOOGLE, Region } from 'react-native-maps';
 
 import { defaultMapStyle, darkMapStyle } from '../../config/googleMapsConfig';
 import { useRestaurants } from '../../hooks/useRestaurants';
 import { useCurrentLocation } from '../../hooks/useCurrentLocation';
-import { styles } from './RestaurantMap.style';
 import { useThemeSettings } from '../../hooks/useThemeSettings';
+import MapMarker from '../MapMarker';
+import { styles } from './RestaurantMap.style';
 
 const RestaurantMap = () => {
   const { currentLocation } = useCurrentLocation();
@@ -42,33 +43,15 @@ const RestaurantMap = () => {
           provider={PROVIDER_GOOGLE} // Required for Google Maps
           style={styles.map}
           region={mapRegion}
-          customMapStyle={googleMapsStyle}>
-          {restaurants.map((marker, index) => (
-            <Marker
+          {restaurants.map((item, index) => (
+            <MapMarker
               key={index}
-              coordinate={{
-                latitude: marker.marker.latitude,
-                longitude: marker.marker.longitude,
+              coordinates={{
+                latitude: item.marker.latitude,
+                longitude: item.marker.longitude,
               }}
-              title={marker.name}>
-              <Center>
-                <Box
-                  width={8}
-                  height={8}
-                  backgroundColor="brand.opaque"
-                  borderRadius="full">
-                  <Box
-                    pos="absolute"
-                    top={1}
-                    left={1}
-                    width={6}
-                    height={6}
-                    backgroundColor="brand.opaque"
-                    borderRadius="full"
-                  />
-                </Box>
-              </Center>
-            </Marker>
+              title={item.name}
+            />
           ))}
         </MapView>
       )}
