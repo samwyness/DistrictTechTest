@@ -17,6 +17,7 @@ const Navigation: React.FC = () => {
   return (
     <NavigationContainer
       theme={themeSettings.isDarkMode ? DarkTheme : DefaultTheme}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Root" component={BottomTabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
