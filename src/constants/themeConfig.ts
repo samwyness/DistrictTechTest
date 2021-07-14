@@ -6,6 +6,7 @@ const colors = {
     primary: '#f54b5e',
     light: '#ff808b',
     dark: '#bc0035',
+    opaque: 'rgba(245, 75, 94, 0.5)',
   },
 };
 
