@@ -2,35 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { Box, Center, View } from 'native-base';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 
+import { defaultMapStyle, darkMapStyle } from '../../config/googleMapsConfig';
 import { useRestaurants } from '../../hooks/useRestaurants';
 import { useCurrentLocation } from '../../hooks/useCurrentLocation';
 import { styles } from './RestaurantMap.style';
-
-const googleMapStyle = [
-  {
-    featureType: 'poi',
-    elementType: 'labels.icon',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'poi',
-    elementType: 'labels.text',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-];
+import { useThemeSettings } from '../../hooks/useThemeSettings';
 
 const RestaurantMap = () => {
   const { currentLocation } = useCurrentLocation();
   const { restaurants, getNearbyRestaurants } = useRestaurants();
   const [mapRegion, setMapRegion] = useState<Region>();
+  const googleMapsStyle = useThemeSettings().isDarkMode
+    ? darkMapStyle
+    : defaultMapStyle;
 
   // Set map region to current location
   useEffect(() => {
@@ -58,7 +42,7 @@ const RestaurantMap = () => {
           provider={PROVIDER_GOOGLE} // Required for Google Maps
           style={styles.map}
           region={mapRegion}
-          customMapStyle={googleMapStyle}>
+          customMapStyle={googleMapsStyle}>
           {restaurants.map((marker, index) => (
             <Marker
               key={index}
