@@ -17,6 +17,14 @@ const RestaurantMap = () => {
     ? darkMapStyle
     : defaultMapStyle;
 
+  const updateNearByRestaurants = useCallback(
+    (region: Region) => {
+      setMapRegion(region);
+      getNearbyRestaurants(region.latitude, region.longitude);
+    },
+    [getNearbyRestaurants],
+  );
+
   // Set map region to current location
   useEffect(() => {
     !mapRegion &&
@@ -42,7 +50,10 @@ const RestaurantMap = () => {
         <MapView
           provider={PROVIDER_GOOGLE} // Required for Google Maps
           style={styles.map}
+          initialRegion={mapRegion}
           region={mapRegion}
+          customMapStyle={googleMapsStyle}
+          onRegionChangeComplete={updateNearByRestaurants}>
           {restaurants.map((item, index) => (
             <MapMarker
               key={index}
