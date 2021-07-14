@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native';
 
 import { useThemeSettings } from '../hooks/useThemeSettings';
-import BottomTabNavigator from './BottomTabNavigator';
+import AppBarBottomNavigator from './AppBarBottom.navigator';
 
 const Stack = createStackNavigator();
 
@@ -18,7 +18,7 @@ const Navigation: React.FC = () => {
     <NavigationContainer
       theme={themeSettings.isDarkMode ? DarkTheme : DefaultTheme}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Root" component={BottomTabNavigator} />
+        <Stack.Screen name="Root" component={AppBarBottomNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );
