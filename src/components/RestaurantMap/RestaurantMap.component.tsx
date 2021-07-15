@@ -3,15 +3,18 @@ import { View } from 'native-base';
 import MapView, { PROVIDER_GOOGLE, Region } from 'react-native-maps';
 
 import { defaultMapStyle, darkMapStyle } from '../../config/googleMapsConfig';
-import { useRestaurants } from '../../hooks/useRestaurants';
 import { useCurrentLocation } from '../../hooks/useCurrentLocation';
 import { useThemeSettings } from '../../hooks/useThemeSettings';
 import MapMarker from '../MapMarker';
 import { styles } from './RestaurantMap.style';
+import { Restaurant } from '../../models/Restaurant';
 
-const RestaurantMap = () => {
+type RestaurantMapProps = {
+  restaurants: Restaurant[];
+};
+
+const RestaurantMap: React.FC<RestaurantMapProps> = ({ restaurants }) => {
   const { currentLocation } = useCurrentLocation();
-  const { restaurants } = useRestaurants();
   const [mapRegion, setMapRegion] = useState<Region>();
 
   const googleMapsStyle = useThemeSettings().isDarkMode
