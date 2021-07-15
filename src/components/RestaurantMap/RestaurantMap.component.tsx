@@ -11,8 +11,9 @@ import { styles } from './RestaurantMap.style';
 
 const RestaurantMap = () => {
   const { currentLocation } = useCurrentLocation();
-  const { restaurants, getNearbyRestaurants } = useRestaurants();
+  const { restaurants } = useRestaurants();
   const [mapRegion, setMapRegion] = useState<Region>();
+
   const googleMapsStyle = useThemeSettings().isDarkMode
     ? darkMapStyle
     : defaultMapStyle;
@@ -28,17 +29,10 @@ const RestaurantMap = () => {
       setMapRegion({
         latitude: currentLocation.latitude,
         longitude: currentLocation.longitude,
-        latitudeDelta: 0.015,
-        longitudeDelta: 0.0121,
+        latitudeDelta: 0.015, // TODO: calculate values based on viewport
+        longitudeDelta: 0.0121, // TODO: calculate values based on viewport
       });
   }, [currentLocation, mapRegion]);
-
-  // Fetch nearby places once we have region data
-  useEffect(() => {
-    if (restaurants.length === 0 && mapRegion) {
-      getNearbyRestaurants(mapRegion.latitude, mapRegion.longitude);
-    }
-  }, [getNearbyRestaurants, mapRegion, restaurants.length]);
 
   return (
     <View style={styles.container}>
