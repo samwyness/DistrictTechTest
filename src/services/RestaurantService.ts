@@ -7,10 +7,10 @@ export type GooglePlaceResult = {
   rating: number;
   user_ratings_total: number;
   vicinity: string;
-  opening_hours: {
+  opening_hours?: {
     open_now: boolean;
   };
-  photos: {
+  photos?: {
     height: number;
     photo_reference: string;
     width: number;
@@ -56,11 +56,18 @@ export default class RestaurantService {
     return {
       id: place.place_id,
       name: place.name,
-      isOpen: place.opening_hours.open_now,
+      isOpen: place.opening_hours?.open_now || false,
       rating: place.rating,
       totalRatings: place.user_ratings_total,
       address: place.vicinity,
-      photos: place.photos,
+      image:
+        place.photos && place.photos.length > 0
+          ? {
+              src: place.photos[0].photo_reference,
+              width: place.photos[0].width,
+              height: place.photos[0].height,
+            }
+          : null,
       marker: {
         latitude: place.geometry.location.lat,
         longitude: place.geometry.location.lng,

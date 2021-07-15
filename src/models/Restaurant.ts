@@ -9,7 +9,7 @@ export type Restaurant = {
     src: string;
     width: number;
     height: number;
-  };
+  } | null;
   marker: {
     latitude: number;
     longitude: number;
