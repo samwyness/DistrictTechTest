@@ -5,11 +5,11 @@ export type Restaurant = {
   rating: number;
   totalRatings: number;
   address: string;
-  photos: {
-    height: number;
-    photo_reference: string;
+  image: {
+    src: string;
     width: number;
-  }[];
+    height: number;
+  } | null;
   marker: {
     latitude: number;
     longitude: number;

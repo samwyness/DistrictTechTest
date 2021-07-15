@@ -1,36 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Center, View } from 'native-base';
-import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View } from 'native-base';
+import MapView, { PROVIDER_GOOGLE, Region } from 'react-native-maps';
 
+import { defaultMapStyle, darkMapStyle } from '../../config/googleMapsConfig';
 import { useRestaurants } from '../../hooks/useRestaurants';
 import { useCurrentLocation } from '../../hooks/useCurrentLocation';
+import { useThemeSettings } from '../../hooks/useThemeSettings';
+import MapMarker from '../MapMarker';
 import { styles } from './RestaurantMap.style';
-
-const googleMapStyle = [
-  {
-    featureType: 'poi',
-    elementType: 'labels.icon',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'poi',
-    elementType: 'labels.text',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-];
 
 const RestaurantMap = () => {
   const { currentLocation } = useCurrentLocation();
   const { restaurants, getNearbyRestaurants } = useRestaurants();
   const [mapRegion, setMapRegion] = useState<Region>();
+  const googleMapsStyle = useThemeSettings().isDarkMode
+    ? darkMapStyle
+    : defaultMapStyle;
+
+  const handleOnRegionChangeComplete = useCallback((region: Region) => {
+    setMapRegion(region);
+  }, []);
 
   // Set map region to current location
   useEffect(() => {
@@ -57,34 +46,19 @@ const RestaurantMap = () => {
         <MapView
           provider={PROVIDER_GOOGLE} // Required for Google Maps
           style={styles.map}
+          initialRegion={mapRegion}
           region={mapRegion}
-          customMapStyle={googleMapStyle}>
-          {restaurants.map((marker, index) => (
-            <Marker
+          customMapStyle={googleMapsStyle}
+          onRegionChangeComplete={handleOnRegionChangeComplete}>
+          {restaurants.map((item, index) => (
+            <MapMarker
               key={index}
-              coordinate={{
-                latitude: marker.marker.latitude,
-                longitude: marker.marker.longitude,
+              coordinates={{
+                latitude: item.marker.latitude,
+                longitude: item.marker.longitude,
               }}
-              title={marker.name}>
-              <Center>
-                <Box
-                  width={8}
-                  height={8}
-                  backgroundColor="brand.opaque"
-                  borderRadius="full">
-                  <Box
-                    pos="absolute"
-                    top={1}
-                    left={1}
-                    width={6}
-                    height={6}
-                    backgroundColor="brand.opaque"
-                    borderRadius="full"
-                  />
-                </Box>
-              </Center>
-            </Marker>
+              title={item.name}
+            />
           ))}
         </MapView>
       )}

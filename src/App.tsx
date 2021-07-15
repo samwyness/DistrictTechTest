@@ -3,7 +3,7 @@ import React from 'react';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 import { StatusBar } from 'react-native';
 
-import { themeConfig } from './constants/themeConfig';
+import { themeConfig } from './config/themeConfig';
 import { RestaurantsProvider } from './contexts/RestaurantsContext';
 import Navigation from './navigation';
 
