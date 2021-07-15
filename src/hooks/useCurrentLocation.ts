@@ -16,8 +16,8 @@ export const useCurrentLocation = () => {
 
   // Determine current location on first render
   useEffect(() => {
-    getCurrentLocation();
-  }, [getCurrentLocation]);
+    !currentLocation && getCurrentLocation();
+  }, [currentLocation, getCurrentLocation]);
 
   return {
     currentLocation,
