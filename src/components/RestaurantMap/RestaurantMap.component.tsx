@@ -3,16 +3,20 @@ import { View } from 'native-base';
 import MapView, { PROVIDER_GOOGLE, Region } from 'react-native-maps';
 
 import { defaultMapStyle, darkMapStyle } from '../../config/googleMapsConfig';
-import { useRestaurants } from '../../hooks/useRestaurants';
 import { useCurrentLocation } from '../../hooks/useCurrentLocation';
 import { useThemeSettings } from '../../hooks/useThemeSettings';
 import MapMarker from '../MapMarker';
 import { styles } from './RestaurantMap.style';
+import { Restaurant } from '../../models/Restaurant';
 
-const RestaurantMap = () => {
+type RestaurantMapProps = {
+  restaurants: Restaurant[];
+};
+
+const RestaurantMap: React.FC<RestaurantMapProps> = ({ restaurants }) => {
   const { currentLocation } = useCurrentLocation();
-  const { restaurants, getNearbyRestaurants } = useRestaurants();
   const [mapRegion, setMapRegion] = useState<Region>();
+
   const googleMapsStyle = useThemeSettings().isDarkMode
     ? darkMapStyle
     : defaultMapStyle;
@@ -28,17 +32,10 @@ const RestaurantMap = () => {
       setMapRegion({
         latitude: currentLocation.latitude,
         longitude: currentLocation.longitude,
-        latitudeDelta: 0.015,
-        longitudeDelta: 0.0121,
+        latitudeDelta: 0.015, // TODO: calculate values based on viewport
+        longitudeDelta: 0.0121, // TODO: calculate values based on viewport
       });
   }, [currentLocation, mapRegion]);
-
-  // Fetch nearby places once we have region data
-  useEffect(() => {
-    if (restaurants.length === 0 && mapRegion) {
-      getNearbyRestaurants(mapRegion.latitude, mapRegion.longitude);
-    }
-  }, [getNearbyRestaurants, mapRegion, restaurants.length]);
 
   return (
     <View style={styles.container}>
