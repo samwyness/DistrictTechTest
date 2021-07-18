@@ -3,10 +3,10 @@ import { Appearance } from 'react-native';
 
 const colors = {
   brand: {
-    primary: '#f54b5e',
-    light: '#ff808b',
-    dark: '#bc0035',
-    opaque: 'rgba(245, 75, 94, 0.5)',
+    primary: '#43a047',
+    light: '#76d275',
+    dark: '#00701a',
+    opaque: 'rgba(67, 160, 71, 0.5)',
   },
 };
 
