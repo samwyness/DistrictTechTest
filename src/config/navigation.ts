@@ -1,10 +1,11 @@
 import React from 'react';
 
 import RestaurantsScreen from '../screens/RestaurantsScreen';
+import RestaurantDetailScreen from '../screens/RestaurantDetailScreen';
 import MapScreen from '../screens/MapScreen';
 
-import MapTab from './MapTab.navigator';
-import RestaurantsTab from './RestaurantsTab.navigator';
+import MapTab from '../navigation/MapTab.navigator';
+import RestaurantsTab from '../navigation/RestaurantsTab.navigator';
 
 // Screens
 //-----------------
@@ -12,6 +13,10 @@ export const screens = {
   Restaurants: {
     name: 'RestaurantsScreen',
     component: RestaurantsScreen,
+  },
+  RestaurantDetail: {
+    name: 'RestaurantDetailScreen',
+    component: RestaurantDetailScreen,
   },
   Map: {
     name: 'MapScreen',
@@ -32,7 +37,7 @@ export const bottomTabs: TabConfig[] = [
   {
     name: 'Restaurants',
     label: 'Restaurants',
-    icon: 'whatshot',
+    icon: 'restaurant',
     component: RestaurantsTab,
   },
   {

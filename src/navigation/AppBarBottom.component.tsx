@@ -4,7 +4,7 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { HStack, Center, Text, Pressable } from 'native-base';
 import Icon from 'react-native-vector-icons//MaterialIcons';
 
-import { bottomTabs, findTabByName } from './config';
+import { bottomTabs, findTabByName } from '../config/navigation';
 import { useCallback } from 'react';
 
 const AppBarBottom: React.FC<BottomTabBarProps> = ({
