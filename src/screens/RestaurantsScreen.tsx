@@ -1,5 +1,6 @@
 import React from 'react';
-import { FlatList } from 'native-base';
+import { StyleSheet } from 'react-native';
+import { FlatList, View } from 'native-base';
 
 import { useThemeSettings } from '../hooks/useThemeSettings';
 import { useRestaurants } from '../hooks/useRestaurants';
@@ -11,15 +12,25 @@ const RestaurantsScreen = () => {
   const { restaurants } = useRestaurants();
 
   return (
-    <FlatList
-      data={restaurants}
-      backgroundColor={themeSettings.backgroundColor}
-      keyExtractor={item => (item as Restaurant).id}
-      renderItem={(result: { item: Restaurant }) => (
-        <RestaurantCard restaurant={result.item} />
-      )}
-    />
+    <View flex={1} pt={20} backgroundColor={themeSettings.backgroundColor}>
+      <FlatList
+        contentContainerStyle={styles.verticalFlatList}
+        data={restaurants}
+        keyExtractor={item => (item as Restaurant).id}
+        renderItem={(result: { item: Restaurant }) => (
+          <RestaurantCard restaurant={result.item} />
+        )}
+      />
+    </View>
   );
 };
 
 export default RestaurantsScreen;
+
+const styles = StyleSheet.create({
+  verticalFlatList: {
+    padding: 20,
+    paddingBottom: 100,
+    justifyContent: 'space-between',
+  },
+});
