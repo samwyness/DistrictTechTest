@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import RestaurantService from '../services/RestaurantService';
 import { useRestaurantsContext } from './useRestaurantsContext';
@@ -7,9 +7,9 @@ import { useCurrentLocation } from './useCurrentLocation';
 const restaurantService = new RestaurantService();
 
 export const useRestaurants = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const { currentLocation } = useCurrentLocation();
-  const { restaurants, setRestaurants } = useRestaurantsContext();
+  const { restaurants, isLoading, setRestaurants, setIsLoading } =
+    useRestaurantsContext();
 
   const getNearbyRestaurants = useCallback(
     async (latitude: number, longitude: number) => {
@@ -26,12 +26,12 @@ export const useRestaurants = () => {
       setRestaurants(results);
       setIsLoading(false);
     },
-    [setRestaurants],
+    [setIsLoading, setRestaurants],
   );
 
   // Fetch nearby places once we have region data
   useEffect(() => {
-    if (!restaurants.length && !isLoading && currentLocation) {
+    if (!restaurants.length && !isLoading && !!currentLocation) {
       getNearbyRestaurants(currentLocation.latitude, currentLocation.longitude);
     }
   }, [currentLocation, getNearbyRestaurants, isLoading, restaurants.length]);
@@ -41,5 +41,5 @@ export const useRestaurants = () => {
   //   restaurants: restaurants.length,
   // });
 
-  return { restaurants, getNearbyRestaurants };
+  return { restaurants, isLoading, getNearbyRestaurants };
 };
