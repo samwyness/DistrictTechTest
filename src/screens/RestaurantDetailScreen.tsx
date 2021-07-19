@@ -4,19 +4,26 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Box, Heading, Link, Skeleton, Stack, Text, View } from 'native-base';
 
-import { RootStackParamList } from '../navigation';
 import { usePlaceDetails } from '../hooks/usePlaceDetails';
+import { useThemeSettings } from '../hooks/useThemeSettings';
+import { AppBottomBarParamList } from '../navigation/AppBarBottom.navigator';
 import PlaceImage from '../components/PlaceImage';
 
-type RestaurantDetailScreenProps = {
-  route: RouteProp<RootStackParamList, 'RestaurantDetailScreen'>;
-  navigation: StackNavigationProp<RootStackParamList, 'RestaurantDetailScreen'>;
+export type RestaurantDetailScreenNavigationProp = StackNavigationProp<
+  AppBottomBarParamList,
+  'RestaurantDetail'
+>;
+
+export type RestaurantDetailScreenProps = {
+  route: RouteProp<AppBottomBarParamList, 'RestaurantDetail'>;
+  navigation: RestaurantDetailScreenNavigationProp;
 };
 
 const RestaurantDetailScreen: React.FC<RestaurantDetailScreenProps> = ({
   route,
 }) => {
   const { width } = useWindowDimensions();
+  const themeSettings = useThemeSettings();
   const { restaurantId } = route.params;
   const { placeDetails, isLoading } = usePlaceDetails(restaurantId);
 
@@ -37,22 +44,26 @@ const RestaurantDetailScreen: React.FC<RestaurantDetailScreenProps> = ({
 
   return (
     <View>
-      <Box flexBasis="25%" bg="brand.light">
+      <Box flexBasis="25%" bg="gray.200">
         <PlaceImage
           imageRef={placeDetails.imageRef}
-          altText={placeDetails.name}
+          alt={placeDetails.name}
           width={width}
         />
       </Box>
       <Box p={4}>
         <Stack space={2}>
-          <Heading>{placeDetails.name}</Heading>
-          <Text color="gray.400">{placeDetails.address}</Text>
-          <Text>{placeDetails.phoneNumber}</Text>
+          <Heading color={themeSettings.textColor}>{placeDetails.name}</Heading>
+          <Text color={themeSettings.textColor}>{placeDetails.address}</Text>
+          <Text color={themeSettings.textColor}>
+            {placeDetails.phoneNumber}
+          </Text>
           {placeDetails.website && (
-            <Link href={placeDetails.website}>Visit website</Link>
+            <Link href={placeDetails.website}>
+              <Text color={themeSettings.textColor}>Visit website</Text>
+            </Link>
           )}
-          <Text>{placeDetails.rating}</Text>
+          <Text color={themeSettings.textColor}>{placeDetails.rating}</Text>
         </Stack>
       </Box>
     </View>
