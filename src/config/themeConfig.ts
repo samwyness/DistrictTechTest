@@ -14,7 +14,7 @@ const colors = {
 // Dark/Light styles matching current Color Scheme
 function buttonDefault(props: Dict) {
   const isDarkMode = Appearance.getColorScheme() === 'dark';
-  let bg = isDarkMode ? 'dark.900' : 'dark.50';
+  let bg = isDarkMode ? 'dark.700' : 'dark.50';
 
   if (props.isDisabled) {
     bg = isDarkMode ? 'dark.500' : 'dark.300';
@@ -26,7 +26,7 @@ function buttonDefault(props: Dict) {
     },
     bg,
     _pressed: {
-      bg: isDarkMode ? 'dark.700' : 'dark.200',
+      bg: isDarkMode ? 'dark.600' : 'dark.200',
     },
   };
 }
@@ -62,9 +62,6 @@ export const themeConfig = {
     Button: {
       baseStyle: {
         rounded: 'full',
-        _text: {
-          textTransform: 'uppercase',
-        },
       },
       defaultProps: {
         variant: 'default',

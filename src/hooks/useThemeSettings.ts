@@ -20,6 +20,6 @@ export const useThemeSettings = (): ThemeSettings => {
     isDarkMode,
     statusBarStyle: statusBarScheme,
     backgroundColor: isDarkMode ? theme.colors.black : theme.colors.white,
-    textColor: isDarkMode ? theme.colors.lightText : theme.colors.darkText,
+    textColor: isDarkMode ? theme.colors.dark[600] : theme.colors.darkText,
   };
 };
