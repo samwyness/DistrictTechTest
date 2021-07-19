@@ -7,12 +7,12 @@ import { useRestaurants } from '../hooks/useRestaurants';
 import { Restaurant } from '../models/Restaurant';
 import RestaurantCard from '../components/RestaurantCard';
 
-const RestaurantsScreen = () => {
+const RestaurantsScreen: React.FC = () => {
   const themeSettings = useThemeSettings();
   const { restaurants } = useRestaurants();
 
   return (
-    <View flex={1} pt={20} backgroundColor={themeSettings.backgroundColor}>
+    <View flex={1} backgroundColor={themeSettings.backgroundColor}>
       <FlatList
         contentContainerStyle={styles.verticalFlatList}
         data={restaurants}
