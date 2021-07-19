@@ -1,3 +1,5 @@
+import axios, { AxiosInstance } from 'axios';
+
 import { GOOGLE_MAPS_API_KEY } from '../constants/keys';
 import { Restaurant } from '../models/Restaurant';
 
@@ -35,13 +37,20 @@ export type RestaurantDetailResponse = {
 };
 
 export default class RestaurantService {
+  apiService: AxiosInstance;
+
+  constructor() {
+    this.apiService = axios.create({
+      baseURL: 'https://maps.googleapis.com/maps/api/place',
+      headers: {},
+    });
+  }
+
   async getNearbyPlaces(
     latitude: number,
     longitude: number,
     radius: number,
   ): Promise<Restaurant[]> {
-    const baseUrl =
-      'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
     const searchParams = new URLSearchParams({
       types: 'restaurant',
       location: `${latitude},${longitude}`,
@@ -50,8 +59,10 @@ export default class RestaurantService {
     });
 
     try {
-      const response = await fetch(baseUrl + searchParams);
-      const json = (await response.json()) as NearbyRestaurantsResponse;
+      const response = await this.apiService.get(
+        `/nearbysearch/json?${searchParams}`,
+      );
+      const json = (await response.data) as NearbyRestaurantsResponse;
 
       return json.results.map(place => this.googlePlaceToRestaurant(place));
     } catch (error) {
@@ -60,7 +71,6 @@ export default class RestaurantService {
   }
 
   async getPlaceDetailsByReference(placeId: string): Promise<Restaurant> {
-    const baseUrl = ' https://maps.googleapis.com/maps/api/place/details/json?';
     const searchParams = new URLSearchParams({
       place_id: placeId,
       fields:
@@ -69,8 +79,10 @@ export default class RestaurantService {
     });
 
     try {
-      const response = await fetch(baseUrl + searchParams);
-      const json = (await response.json()) as RestaurantDetailResponse;
+      const response = await this.apiService.get(
+        `/details/json?${searchParams}`,
+      );
+      const json = (await response.data) as RestaurantDetailResponse;
 
       return this.googlePlaceToRestaurant(json.result);
     } catch (error) {
@@ -82,7 +94,6 @@ export default class RestaurantService {
     photoRef: string,
     maxWidth: string,
   ): Promise<string | null> {
-    const baseUrl = ' https://maps.googleapis.com/maps/api/place/photo?';
     const searchParams = new URLSearchParams({
       photoreference: photoRef,
       maxwidth: maxWidth,
@@ -90,8 +101,14 @@ export default class RestaurantService {
     });
 
     try {
-      const response = await fetch(baseUrl + searchParams);
-      return response.url;
+      // TODO: investigate why network request sometimes fail when not in DEBUG mode
+      const response = await this.apiService.get(`/photo?${searchParams}`, {
+        headers: {
+          'Access-Control-Expose-Headers': 'Location',
+        },
+      });
+
+      return await response.request.responseURL;
     } catch (error) {
       throw new Error(error);
     }
