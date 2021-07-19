@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { NativeBaseProvider, extendTheme } from 'native-base';
 import { StatusBar } from 'react-native';
+import { NativeBaseProvider, extendTheme } from 'native-base';
 
 import { themeConfig } from './config/themeConfig';
 import { RestaurantsProvider } from './contexts/RestaurantsContext';
