@@ -13,7 +13,6 @@ const AppBarBottom: React.FC<BottomTabBarProps> = ({
   navigation,
 }) => {
   const focusedOptions = descriptors[state.routes[state.index].key].options;
-
   const handleOnPress = useCallback(
     (route: Route<string>, isFocused: boolean) => {
       const event = navigation.emit({
