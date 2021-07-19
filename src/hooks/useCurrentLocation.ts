@@ -13,10 +13,9 @@ export const useCurrentLocation = () => {
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       );
 
-      console.log(
-        'DEBUG: PERMISSIONS.ACCESS_FINE_LOCATION',
-        PermissionsAndroid.RESULTS.GRANTED,
-      );
+      // console.log(
+      //   `DEBUG: PERMISSIONS.ACCESS_FINE_LOCATION=${PermissionsAndroid.RESULTS.GRANTED}`,
+      // );
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         setHasLocationPermission(true);
@@ -37,6 +36,7 @@ export const useCurrentLocation = () => {
       error => {
         console.log(error);
       },
+      // { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
     );
   }, []);
 
