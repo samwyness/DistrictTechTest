@@ -22,8 +22,8 @@ const RestaurantMap: React.FC<RestaurantMapProps> = ({
   const map = useRef<MapView>(null);
   const { currentLocation } = useCurrentLocation();
   const [mapRegion, setMapRegion] = useState<Region>();
-  const [showMapRefresh, setShowMapRefresh] = useState(false);
   const [focusPlace, setFocusPlace] = useState<Restaurant | null>(null);
+  const [showMapRefresh, setShowMapRefresh] = useState(false);
 
   const googleMapsStyle = useThemeSettings().isDarkMode
     ? darkMapStyle
@@ -31,15 +31,11 @@ const RestaurantMap: React.FC<RestaurantMapProps> = ({
 
   const handleOnRegionChangeComplete = useCallback((region: Region) => {
     setMapRegion(region);
-    setShowMapRefresh(true);
+    setFocusPlace(null);
   }, []);
 
   const handleOnPressRefreshMap = useCallback(() => {
     setShowMapRefresh(false);
-  }, []);
-
-  const handleOnMarkerDeselect = useCallback(() => {
-    setFocusPlace(null);
   }, []);
 
   // Set map region to current location
@@ -66,7 +62,7 @@ const RestaurantMap: React.FC<RestaurantMapProps> = ({
   // Animate to focusPlace marker
   // Note: Stop clashes with 'setMapRegion' by checking for 'MapRegion' first
   useEffect(() => {
-    if (focusPlace && mapRegion) {
+    if (focusPlace) {
       const newRegion: Region = {
         latitude: focusPlace.marker.latitude,
         longitude: focusPlace.marker.longitude,
@@ -74,7 +70,9 @@ const RestaurantMap: React.FC<RestaurantMapProps> = ({
         longitudeDelta: 0.0121, // TODO: calculate values based on viewport
       };
 
-      map.current?.animateToRegion(newRegion);
+      mapRegion
+        ? map.current?.animateToRegion(newRegion)
+        : setMapRegion(newRegion);
     }
   }, [focusPlace, mapRegion]);
 
@@ -102,8 +100,7 @@ const RestaurantMap: React.FC<RestaurantMapProps> = ({
           initialRegion={mapRegion}
           region={mapRegion}
           customMapStyle={googleMapsStyle}
-          onRegionChangeComplete={handleOnRegionChangeComplete}
-          onMarkerDeselect={handleOnMarkerDeselect}>
+          onRegionChangeComplete={handleOnRegionChangeComplete}>
           {restaurants.map((item, index) => (
             <MapMarker
               key={index}
