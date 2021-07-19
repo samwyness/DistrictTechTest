@@ -57,7 +57,6 @@ For more information on running react native on a device/emulator, please see [r
   simple API layer for react native components.
 - For Maps and Places services, I installed the [react-native-maps](https://github.com/react-native-maps/react-native-maps)
   package, along with [Google Maps Platform](https://developers.google.com/maps/documentation/) SDK's for Maps and Places
-  - **TODO:** finish integration of Google services for iOS devices
 
 **Project structure:** (/src folder)
 
@@ -70,3 +69,18 @@ For more information on running react native on a device/emulator, please see [r
 - **/navigation** - Navigation specific components (Navigators, Tabs, etc.)
 - **/screens** - App screens
 - **/services** - Set of context-independent classes
+- **/styles** - Shared stylesheets
+
+## TODO:
+
+- [ ] Finish integration of Google services for iOS devices
+- [ ] Finish dark theme styles
+- [ ] Finish 'Search this area' functionality in RestaurantMap
+- [ ] Finish implementation of 'Favourite' restaurants
+  - [ ] Add favourites array (ids) to local cache
+  - [ ] Match cached favourites with restaurants in context
+- [ ] Finish Restaurant Details screen
+  - [ ] Add favourites toggle functionality
+  - [ ] Add back button and hide AppBarBottom
+- [ ] Add fallback scenario for users who deny Location permissions
+- [ ] Add unit test for API services
